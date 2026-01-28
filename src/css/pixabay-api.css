@@ -1,0 +1,73 @@
+/* Центруємо форму на сторінці */
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Горизонтальна форма */
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    /* відстань між полем і кнопкою */
+    margin-bottom: 32px;
+    background-color: #fff;
+}
+
+
+/* Поле вводу */
+.form input[type="text"] {
+    width: 272px;
+    /* ширина панелі */
+    height: 40px;
+    /* висота панелі */
+    padding: 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #2e2f42;
+    background-color: #fff !important;
+    /* біла панель */
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-shadow: none;
+    /* прибирає блакитне сяйво при focus */
+}
+
+.form input[type="text"]:hover {
+    border-color: #000;
+}
+
+.form input[type="text"]:focus {
+    border-color: #4e75ff;
+}
+
+/* Кнопка */
+.form button[type="submit"] {
+    width: 91px;
+    height: 40px;
+    background-color: #4e75ff;
+    /* синя кнопка */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.form button[type="submit"]:hover {
+    background-color: #6c8cff;
+}
+
+/* Забираємо стиль при фокусі та valid */
+input[type="text"]:focus,
+input[type="text"]:valid {
+    background-color: #fff !important;
+    box-shadow: none !important;
+}
