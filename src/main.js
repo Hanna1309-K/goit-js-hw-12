@@ -2,11 +2,12 @@ import { getImagesByQuery } from './js/pixabay-api';
 import {
     createGallery,
     clearGallery,
-    showLoader,
+    showLoaderWithDelay,
     hideLoader,
     showLoadMoreButton,
     hideLoadMoreButton,
 } from './js/render-functions';
+
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
@@ -19,13 +20,14 @@ let totalHits = 0;
 
 form.addEventListener('submit', async e => {
     e.preventDefault();
-    query = e.target.elements.search.value.trim();
+
+    query = e.target.elements['search-text'].value.trim();
     if (!query) return;
 
     page = 1;
     clearGallery();
     hideLoadMoreButton();
-    showLoader();
+    showLoaderWithDelay();
 
     try {
         const data = await getImagesByQuery(query, page);
@@ -47,7 +49,7 @@ form.addEventListener('submit', async e => {
 
 loadMoreBtn.addEventListener('click', async () => {
     page += 1;
-    showLoader();
+    showLoaderWithDelay();
 
     try {
         const data = await getImagesByQuery(query, page);
@@ -63,6 +65,7 @@ loadMoreBtn.addEventListener('click', async () => {
 
         const cardHeight =
             document.querySelector('.image-wrapper').getBoundingClientRect().height;
+
         window.scrollBy({
             top: cardHeight * 2,
             behavior: 'smooth',

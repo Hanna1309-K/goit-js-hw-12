@@ -95,12 +95,29 @@
 
 .load-more {
     display: block;
-    margin: 32px auto;
-    padding: 8px 16px;
-    font-size: 16px;
+    /* щоб кнопка займала окремий рядок */
+    width: 125px;
+    height: 40px;
+    margin: 32px auto 0;
+    /* 32px зверху від галереї, автоматичне вирівнювання по центру */
+    background-color: #4e75ff;
+    /* синій колір кнопки */
+    color: #fff;
+    /* білий текст */
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.load-more:hover {
+    background-color: #6c8cff;
+    /* світліший синій при ховері */
 }
 
 .load-more.hidden {
     display: none;
+    /* для приховання кнопки */
 }
