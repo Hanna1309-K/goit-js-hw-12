@@ -7,17 +7,19 @@ import {
     showLoadMoreButton,
     hideLoadMoreButton,
 } from './js/render-functions';
-
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('.form');
 const loadMoreBtn = document.querySelector('.load-more');
 
+const PER_PAGE = 15;
+
 let query = '';
 let page = 1;
 let totalHits = 0;
 
+/* ===== SEARCH ===== */
 form.addEventListener('submit', async e => {
     e.preventDefault();
 
@@ -25,6 +27,8 @@ form.addEventListener('submit', async e => {
     if (!query) return;
 
     page = 1;
+    totalHits = 0;
+
     clearGallery();
     hideLoadMoreButton();
     showLoaderWithDelay();
@@ -39,7 +43,14 @@ form.addEventListener('submit', async e => {
         }
 
         createGallery(data.hits);
-        showLoadMoreButton();
+
+        if (data.hits.length < totalHits) {
+            showLoadMoreButton();
+        } else {
+            iziToast.info({
+                message: "We're sorry, but you've reached the end of search results.",
+            });
+        }
     } catch {
         iziToast.error({ message: 'Error fetching images.' });
     } finally {
@@ -47,29 +58,41 @@ form.addEventListener('submit', async e => {
     }
 });
 
+/* ===== LOAD MORE ===== */
 loadMoreBtn.addEventListener('click', async () => {
     page += 1;
+    hideLoadMoreButton();
     showLoaderWithDelay();
 
     try {
         const data = await getImagesByQuery(query, page);
+
+        if (data.hits.length === 0) {
+            return;
+        }
+
         createGallery(data.hits);
 
-        const loadedImages = page * 15;
-        if (loadedImages >= totalHits) {
-            hideLoadMoreButton();
+        const loadedImages = page * PER_PAGE;
+
+        if (loadedImages < totalHits) {
+            showLoadMoreButton();
+        } else {
             iziToast.info({
                 message: "We're sorry, but you've reached the end of search results.",
             });
         }
 
-        const cardHeight =
-            document.querySelector('.image-wrapper').getBoundingClientRect().height;
-
-        window.scrollBy({
-            top: cardHeight * 2,
-            behavior: 'smooth',
-        });
+        const firstCard = document.querySelector('.image-wrapper');
+        if (firstCard) {
+            const { height } = firstCard.getBoundingClientRect();
+            window.scrollBy({
+                top: height * 2,
+                behavior: 'smooth',
+            });
+        }
+    } catch {
+        iziToast.error({ message: 'Error fetching images.' });
     } finally {
         hideLoader();
     }
